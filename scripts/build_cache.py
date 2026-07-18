@@ -13,6 +13,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -65,11 +66,19 @@ def main() -> None:
     processed = ok = fail = 0
     for i in range(0, len(todo), batch_n):
         batch = todo[i:i + batch_n]
-        subprocess.run(
-            [JAVA, "-jar", str(PROCYON), "-o", str(SRC),
-             *[str(c) for c in batch]],
-            capture_output=True, text=True, timeout=1800,
-        )
+        # Pass class paths via a Procyon @argfile — avoids the Windows ~32KB
+        # command-line length limit (WinError 206) on deep package paths.
+        with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False,
+                                         encoding="utf-8") as af:
+            af.write("\n".join(str(c) for c in batch))
+            argfile = af.name
+        try:
+            subprocess.run(
+                [JAVA, "-jar", str(PROCYON), "-o", str(SRC), "@" + argfile],
+                capture_output=True, text=True, timeout=1800,
+            )
+        finally:
+            Path(argfile).unlink(missing_ok=True)
         for cls in batch:
             # Procyon derives the package path from the constant pool, not the
             # input path; match by class name anywhere under SRC.
