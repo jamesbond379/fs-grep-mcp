@@ -1,0 +1,20 @@
+# venv
+venv/
+.venv/
+
+# vendored binaries (users fetch via scripts/setup_binaries.py — see README)
+bin/rg.exe
+bin/*.jar
+
+# decompile cache + build artifacts (can be hundreds of MB)
+cache/
+build_cache.log
+cache_build*.log
+
+# python
+__pycache__/
+*.pyc
+
+# local / temp
+_mcp.json
+*.bak_*
