@@ -232,10 +232,11 @@ def grep_source(pattern: str, glob: str = "*.java", case_insensitive: bool = Fal
     Run cache_status first if unsure of coverage. Hits reference cached .java
     paths, which mirror the vault's directory structure.
     """
-    if not CACHE.is_dir() or not any(CACHE.iterdir()):
+    if not SRC.is_dir() or not any(SRC.iterdir()):
         return json.dumps({"error": "decompile cache is empty - run "
                            "scripts/build_cache.py (or update_cache) first"})
-    res = _grep_json(pattern, CACHE, glob or None, case_insensitive, literal,
+    # Search only the decompiled-source root (not manifest.json etc.).
+    res = _grep_json(pattern, SRC, glob or None, case_insensitive, literal,
                      context, max(1, min(max_results, 20000)), False)
     return json.dumps(res, ensure_ascii=False)
 
