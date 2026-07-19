@@ -121,3 +121,7 @@ handled implementation and testing.
 ## License
 
 MIT
+
+---
+
+*fs-grep MCP — a collaborative build. Contributions and issues welcome.*
