@@ -110,6 +110,14 @@ fs-grep-mcp/
 └── README.md
 ```
 
+## Credits
+
+Designed and built collaboratively by **[jamesbond379](https://github.com/jamesbond379)**
+and Claude. jamesbond379 scoped the problem and the options, drove the key design
+decisions (two-plane search over the 15,000+ `.class` corpus, the decompile-cache
+approach), caught the result-truncation limit, and reviewed each build step; Claude
+handled implementation and testing.
+
 ## License
 
 MIT
